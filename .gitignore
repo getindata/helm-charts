@@ -8,7 +8,7 @@ bin/*
 .project
 /.bin
 /_test/secrets/*.json
-
+/tmp
 # OSX leaves these everywhere on SMB shares
 ._*
 
