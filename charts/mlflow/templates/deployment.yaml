@@ -39,16 +39,16 @@ spec:
               value: {{ tpl .Values.persistence.defaultArtifactRoot . }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.target }}
+              containerPort: 80
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /api/2.0/preview/mlflow/experiments/list
-              port: {{ .Values.service.target }}
+              port: http
           readinessProbe:
             httpGet:
               path: /api/2.0/preview/mlflow/experiments/list
-              port: {{ .Values.service.target }}
+              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
