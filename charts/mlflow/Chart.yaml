@@ -3,7 +3,7 @@ name: mlflow
 description: MLflow - an open source platform for the machine learning lifecycle
 type: application
 version: 0.1.1
-appVersion: 1.17.0
+appVersion: 1.18.0
 maintainers:
   - name: getindata
     email: mlops@getindata.com

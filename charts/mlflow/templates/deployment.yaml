@@ -43,11 +43,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/2.0/preview/mlflow/experiments/list
               port: {{ .Values.service.target }}
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/2.0/preview/mlflow/experiments/list
               port: {{ .Values.service.target }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
