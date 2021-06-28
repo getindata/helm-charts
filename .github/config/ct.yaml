@@ -1,0 +1,5 @@
+remote: origin
+chart-dirs:
+  - charts
+helm-extra-args: --timeout=180s
+target-branch: main
