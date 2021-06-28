@@ -1,0 +1,18 @@
+apiVersion: v1
+entries:
+  mlflow:
+  - apiVersion: v2
+    appVersion: 1.17.0
+    created: "2021-06-28T11:59:00.659672584Z"
+    description: MLflow - an open source platform for the machine learning lifecycle
+    digest: 8517df090b36e33e94da102f5804dd1a23d5e823f6806a3192cb82790e9c2691
+    maintainers:
+    - email: mlops@getindata.com
+      name: getindata
+      url: https://getindata.com
+    name: mlflow
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/mlflow-0.1.0/mlflow-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-06-28T11:59:00.659689385Z"
