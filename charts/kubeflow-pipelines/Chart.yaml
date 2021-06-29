@@ -1,0 +1,11 @@
+name: kubeflow-pipelines
+description: Platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers
+type: application
+version: 0.1.0
+apiVersion: v2
+appVersion: 1.6.0
+maintainers:
+  - name: GoogleCloudPlatform
+    url: https://cloud.google.com/ai-platform/
+  - name: Kubeflow
+    url: https://github.com/kubeflow/pipelines

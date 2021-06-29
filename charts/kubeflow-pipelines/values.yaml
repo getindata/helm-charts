@@ -1,0 +1,47 @@
+images:
+  apiserver: gcr.io/ml-pipeline/google/pipelines/apiserver:1.6.0
+  argoexecutor: gcr.io/ml-pipeline/google/pipelines/argoexecutor:1.6.0
+  argoworkflowcontroller: gcr.io/ml-pipeline/google/pipelines/argoworkflowcontroller:1.6.0
+  cloudsqlproxy: gcr.io/ml-pipeline/google/pipelines/cloudsqlproxy:1.6.0
+  frontend: gcr.io/ml-pipeline/google/pipelines/frontend:1.6.0
+  metadataserver: gcr.io/ml-pipeline/google/pipelines/metadataserver:1.6.0
+  minio: gcr.io/ml-pipeline/google/pipelines/minio:1.6.0
+  mysql: gcr.io/ml-pipeline/google/pipelines/mysql:1.6.0
+  persistenceagent: gcr.io/ml-pipeline/google/pipelines/persistenceagent:1.6.0
+  proxyagent: gcr.io/ml-pipeline/google/pipelines/proxyagent:1.6.0
+  scheduledworkflow: gcr.io/ml-pipeline/google/pipelines/scheduledworkflow:1.6.0
+  viewercrd: gcr.io/ml-pipeline/google/pipelines/viewercrd:1.6.0
+  visualizationserver: gcr.io/ml-pipeline/google/pipelines/visualizationserver:1.6.0
+  metadataenvoy: gcr.io/ml-pipeline/google/pipelines/metadataenvoy:1.6.0
+  metadatawriter: gcr.io/ml-pipeline/google/pipelines/metadatawriter:1.6.0
+  cacheserver: gcr.io/ml-pipeline/google/pipelines/cacheserver:1.6.0
+  cachedeployer: gcr.io/ml-pipeline/google/pipelines/cachedeployer:1.6.0
+
+# -- Name of configmap holding GCP environment settings. If default, then config map will
+# be generated
+gcpDefaultConfigName: "kubeflow-default-config"
+
+# -- Default GCP environment settings
+defaultConfig:
+  # -- Default GCS storage bucket for kubeflow pipelines
+  defaultBucket: "bucket-name-here"
+  # -- GCP project where the chart is deployed
+  gcpProjectId: "gcp-project-id-here"
+
+
+managedstorage:
+  # -- If true use external storage instead of the on on cluster
+  enabled: false
+  # -- Cloud SQL instance connection name
+  cloudsqlInstanceConnectionName: null
+  # -- Atrifact storage Cloud Storage bucket
+  gcsBucketName: null
+  # -- database name prefix
+  databaseNamePrefix: '{{ .Release.Name | replace "-" "_" | replace "." "_" }}'
+  # -- database username
+  dbUsername: 'root'
+  # -- database password
+  dbPassword: ''
+
+# -- If true IAP proxy via AI Pipelines UI is created
+proxyEnabled: false
