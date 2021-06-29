@@ -17,7 +17,19 @@ data:
   managedStorageDatabasePrefix: '{{ tpl .Values.managedstorage.databaseNamePrefix . }}'
   managedstorageDbUserName: '{{ .Values.managedstorage.dbUsername }}'
   #{{ end }}
-
+{{ if eq .Values.gcpDefaultConfigName "kubeflow-default-config"}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubeflow-default-config
+  labels:
+    app.kubernetes.io/name: '{{ .Release.Name }}'
+data:
+  bucket_name: {{ .Values.defaultConfig.defaultBucket }}
+  has_default_bucket: "true"
+  project_id: {{ .Values.defaultConfig.gcpProjectId }}
+{{end}}
 ---
 apiVersion: v1
 kind: Secret

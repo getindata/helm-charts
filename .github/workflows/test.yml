@@ -36,7 +36,8 @@ jobs:
           fi
 
       - name: Run chart-testing (lint)
-        run: ct lint --config .github/config/ct.yaml
+        # Exclude pipelines until version 1.7.0 is released due to deprecations
+        run: ct lint --config .github/config/ct.yaml --excluded-charts kubeflow-pipelines
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.0.0

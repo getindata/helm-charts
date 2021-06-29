@@ -17,15 +17,31 @@ images:
   cacheserver: gcr.io/ml-pipeline/google/pipelines/cacheserver:1.6.0
   cachedeployer: gcr.io/ml-pipeline/google/pipelines/cachedeployer:1.6.0
 
-serviceAccountCredential: ""
+# -- Name of configmap holding GCP environment settings. If default, then config map will
+# be generated
 gcpDefaultConfigName: "kubeflow-default-config"
 
+# -- Default GCP environment settings
+defaultConfig:
+  # -- Default GCS storage bucket for kubeflow pipelines
+  defaultBucket: "bucket-name-here"
+  # -- GCP project where the chart is deployed
+  gcpProjectId: "gcp-project-id-here"
 
 
 managedstorage:
+  # -- If true use external storage instead of the on on cluster
   enabled: false
+  # -- Cloud SQL instance connection name
   cloudsqlInstanceConnectionName: null
+  # -- Atrifact storage Cloud Storage bucket
   gcsBucketName: null
+  # -- database name prefix
   databaseNamePrefix: '{{ .Release.Name | replace "-" "_" | replace "." "_" }}'
+  # -- database username
   dbUsername: 'root'
+  # -- database password
   dbPassword: ''
+
+# -- If true IAP proxy via AI Pipelines UI is created
+proxyEnabled: false

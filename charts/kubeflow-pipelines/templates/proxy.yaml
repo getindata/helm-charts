@@ -1,3 +1,4 @@
+{{ if .Values.proxyEnabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -67,3 +68,4 @@ metadata:
   name: inverse-proxy-config
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
+{{ end }}
