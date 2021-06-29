@@ -25,4 +25,36 @@ entries:
     urls:
     - https://github.com/getindata/helm-charts/releases/download/gcloud-sqlproxy-0.20.5/gcloud-sqlproxy-0.20.5.tgz
     version: 0.20.5
+  kubeflow-pipelines:
+    - apiVersion: v2
+      appVersion: 1.6.0
+      created: "2021-06-29T16:11:02.672072232Z"
+      description: Platform for building and deploying portable, scalable machine learning
+        (ML) workflows based on Docker containers
+      digest: cca180d26152d0d17a68cfb9869a03ce853e5fda6cec5fd1a62f6ac167ce678f
+      maintainers:
+        - name: GoogleCloudPlatform
+          url: https://cloud.google.com/ai-platform/
+        - name: Kubeflow
+          url: https://github.com/kubeflow/pipelines
+      name: kubeflow-pipelines
+      type: application
+      urls:
+        - https://github.com/getindata/helm-charts/releases/download/kubeflow-pipelines-0.1.0/kubeflow-pipelines-0.1.0.tgz
+      version: 0.1.0
+  mlflow:
+    - apiVersion: v2
+      appVersion: 1.18.0
+      created: "2021-06-29T11:34:36.386461083Z"
+      description: MLflow - an open source platform for the machine learning lifecycle
+      digest: cf547ba0d2c1b936099d03c540b1e95528fbf655916bd0758ca48f912108ecff
+      maintainers:
+        - email: mlops@getindata.com
+          name: getindata
+          url: https://getindata.com
+      name: mlflow
+      type: application
+      urls:
+        - https://github.com/getindata/helm-charts/releases/download/mlflow-0.1.1/mlflow-0.1.1.tgz
+      version: 0.1.1
 generated: "2021-06-29T16:24:16.320625952Z"
