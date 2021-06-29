@@ -10,12 +10,11 @@ persistence:
   # -- Specifies where artifacts are recorded, can be S3, GCS or local filepath.
   defaultArtifactRoot: file:/mlflow/artifacts
 
-  # -- Specifies where experiments metadata is recorded, can be either local file path
-  # (specified as file:/my/local/dir), where data is just directly stored locally or
-  # a database encoded as dialect+driver://username:password@host:port/database.
+  # -- Specifies where experiments metadata is recorded, a database encoded as
+  # dialect+driver://username:password@host:port/database.
   # MLflow supports the dialects mysql, mssql, sqlite, and postgresql.
   # For more details, see SQLAlchemy database uri.
-  backendStoreUri: file:/mlflow/mlruns
+  backendStoreUri: "sqlite:////mlflow/experiments.db"
 
 imagePullSecrets: []
 nameOverride: ""
