@@ -1,3 +1,5 @@
+{{ if eq .Values.platform.cloud .Values.constants.gcp }}
+# ServiceAccount and Service for mysql is only required if running on GCP
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -15,14 +17,17 @@ spec:
   ports:
     - port: 3306
   selector:
-    {{ if .Values.managedstorage.enabled }}
+    {{ if .Values.platform.managedStorage.enabled }}
     app: cloudsqlproxy
     {{ else }}
     app: mysql
     {{ end }}
     app.kubernetes.io/name: {{ .Release.Name }}
 ---
-{{ if .Values.managedstorage.enabled }}
+{{ end }}
+{{ if .Values.platform.managedStorage.enabled }}
+{{ if eq .Values.platform.cloud .Values.constants.gcp }} # START: is GCP?
+# Only GCP requires CloudProxy
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,13 +49,13 @@ spec:
     spec:
       serviceAccountName: mysql
       containers:
-        - image: {{ .Values.images.cloudsqlproxy}}
+        - image: {{ .Values.images.cloudsqlproxy }}
           name: cloudsqlproxy
-          env:
+          env: []
           command: ["/cloud_sql_proxy",
                     "-dir=/cloudsql",
             # Replace with your own CloudSQL instance ID
-                    "-instances={{ .Values.managedstorage.cloudsqlInstanceConnectionName }}=tcp:0.0.0.0:3306",
+                    "-instances={{ .Values.platform.gcp.cloudsqlInstanceConnectionName }}=tcp:0.0.0.0:3306",
             # System workload uses GCE default service account or Workload Identity's service account
             #       "-credential_file=/credentials/application_default_credentials.json",
                     "term_timeout=10s"]
@@ -70,8 +75,10 @@ spec:
               name: cloudsql
       volumes:
         - name: cloudsql
-          emptyDir:
+          emptyDir: {}
 ---
+# END: is GCP?
+{{ end }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -81,9 +88,11 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
 type: Opaque
 data:
-  username: {{ .Values.managedstorage.dbUsername | b64enc | quote}}
-  password: {{ .Values.managedstorage.dbPassword | b64enc | quote}}
+  username: {{ .Values.platform.managedStorage.dbUsername | b64enc | quote}}
+  password: {{ .Values.platform.managedStorage.dbPassword | b64enc | quote}}
+---
 {{ else }}
+# NOT MANAGED STORAGE
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

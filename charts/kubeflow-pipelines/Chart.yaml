@@ -1,11 +1,11 @@
-name: kubeflow-pipelines
-description: Platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers
-type: application
-version: 0.1.0
 apiVersion: v2
+name: kubeflow-pipelines
+description: GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic), adapted from official GCP Helm Chart
+icon: https://getindata.com/img/favicon-32x32.png
+type: application
+version: 1.6.0
 appVersion: 1.6.0
 maintainers:
-  - name: GoogleCloudPlatform
-    url: https://cloud.google.com/ai-platform/
-  - name: Kubeflow
-    url: https://github.com/kubeflow/pipelines
+  - name: getindata
+    email: mlops@getindata.com
+    url: https://getindata.com

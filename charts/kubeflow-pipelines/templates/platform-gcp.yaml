@@ -1,0 +1,119 @@
+{{ if eq .Values.platform.cloud .Values.constants.gcp }}
+{{/*apiVersion: app.k8s.io/v1beta1*/}}
+{{/*kind: Application*/}}
+{{/*metadata:*/}}
+{{/*  name: "{{ .Release.Name }}"*/}}
+{{/*  namespace: "{{ .Release.Namespace }}"*/}}
+{{/*  annotations:*/}}
+{{/*    kubernetes-engine.cloud.google.com/icon: >-*/}}
+{{/*      data:image/png;base64,{{ .Files.Get "logo.png" | b64enc }}*/}}
+{{/*    marketplace.cloud.google.com/deploy-info: '{"partner_id": "google-cloud-ai-platform", "product_id": "kubeflow-pipelines", "partner_name": "Google Cloud AI Platform"}'*/}}
+{{/*  labels:*/}}
+{{/*    app.kubernetes.io/name: "{{ .Release.Name }}"*/}}
+{{/*spec:*/}}
+{{/*  descriptor:*/}}
+{{/*    type: Kubeflow Pipelines*/}}
+{{/*    version: 1.6.0*/}}
+{{/*    description: |-*/}}
+{{/*      Reusable end-to-end ML workflow*/}}
+{{/*    maintainers:*/}}
+{{/*      - name: Google Cloud AI Platform*/}}
+{{/*        url: https://cloud.google.com/ai-platform/*/}}
+{{/*      - name: Kubeflow Pipelines*/}}
+{{/*        url: https://github.com/kubeflow/pipelines*/}}
+{{/*    links:*/}}
+{{/*      - description: 'Kubeflow Pipelines Documentation'*/}}
+{{/*        url: https://www.kubeflow.org/docs/pipelines/*/}}
+{{/*    notes: |-*/}}
+{{/*      Please go to [Hosted Kubeflow Pipelines Console](https://console.cloud.google.com/ai-platform/pipelines/clusters).*/}}
+{{/*  info:*/}}
+{{/*    - name: Application Namespace*/}}
+{{/*      value: "{{ .Release.Namespace }}"*/}}
+{{/*    - name: Console*/}}
+{{/*      value: 'https://console.cloud.google.com/ai-platform/pipelines/clusters'*/}}
+{{/*  componentKinds:*/}}
+{{/*    - group: v1*/}}
+{{/*      kind: ServiceAccount*/}}
+{{/*    - group: rbac.authorization.k8s.io/v1*/}}
+{{/*      kind: Role*/}}
+{{/*    - group: rbac.authorization.k8s.io/v1*/}}
+{{/*      kind: RoleBinding*/}}
+{{/*    - group: v1*/}}
+{{/*      kind: Service*/}}
+{{/*    - group: v1*/}}
+{{/*      kind: ConfigMap*/}}
+{{/*    - group: v1*/}}
+{{/*      kind: Secret*/}}
+{{/*    - group: apps/v1*/}}
+{{/*      kind: Deployment*/}}
+{{/*---*/}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: proxy-agent-runner
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app: proxy-agent-runner
+    app.kubernetes.io/name: {{ .Release.Name }}
+  name: proxy-agent-runner
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app: proxy-agent-runner
+  name: proxy-agent-runner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: proxy-agent-runner
+subjects:
+  - kind: ServiceAccount
+    name: proxy-agent-runner
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: proxy-agent
+    app.kubernetes.io/name: {{ .Release.Name }}
+  name: proxy-agent
+spec:
+  selector:
+    matchLabels:
+      app: proxy-agent
+      app.kubernetes.io/name: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: proxy-agent
+        app.kubernetes.io/name: {{ .Release.Name }}
+    spec:
+      hostNetwork: true
+      containers:
+        - image: {{ .Values.images.proxyagent }}
+          imagePullPolicy: IfNotPresent
+          name: proxy-agent
+      serviceAccountName: proxy-agent-runner
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inverse-proxy-config
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+{{ end }}

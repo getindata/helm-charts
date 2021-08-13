@@ -1,47 +1,37 @@
 # kubeflow-pipelines
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
+![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
-Platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers
+GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic), adapted from official GCP Helm Chart
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| GoogleCloudPlatform |  | https://cloud.google.com/ai-platform/ |
-| Kubeflow |  | https://github.com/kubeflow/pipelines |
+| getindata | mlops@getindata.com | https://getindata.com |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| defaultConfig | object | `{"defaultBucket":"bucket-name-here","gcpProjectId":"gcp-project-id-here"}` | Default GCP environment settings |
-| defaultConfig.defaultBucket | string | `"bucket-name-here"` | Default GCS storage bucket for kubeflow pipelines |
-| defaultConfig.gcpProjectId | string | `"gcp-project-id-here"` | GCP project where the chart is deployed |
-| gcpDefaultConfigName | string | `"kubeflow-default-config"` | Name of configmap holding GCP environment settings. If default, then config map will be generated |
-| managedstorage.cloudsqlInstanceConnectionName | string | `nil` | Cloud SQL instance connection name |
-| managedstorage.databaseNamePrefix | string | `"{{ .Release.Name | replace \"-\" \"_\" | replace \".\" \"_\" }}"` | database name prefix |
-| managedstorage.dbPassword | string | `""` | database password |
-| managedstorage.dbUsername | string | `"root"` | database username |
-| managedstorage.enabled | bool | `false` | If true use external storage instead of the on on cluster |
-| managedstorage.gcsBucketName | string | `nil` | Atrifact storage Cloud Storage bucket |
-| proxyEnabled | boolean | `false` | Should create AI Pipelines IAP proxy |
-| images.apiserver | string | `"gcr.io/ml-pipeline/google/pipelines/apiserver:1.6.0"` |  |
-| images.argoexecutor | string | `"gcr.io/ml-pipeline/google/pipelines/argoexecutor:1.6.0"` |  |
-| images.argoworkflowcontroller | string | `"gcr.io/ml-pipeline/google/pipelines/argoworkflowcontroller:1.6.0"` |  |
-| images.cachedeployer | string | `"gcr.io/ml-pipeline/google/pipelines/cachedeployer:1.6.0"` |  |
-| images.cacheserver | string | `"gcr.io/ml-pipeline/google/pipelines/cacheserver:1.6.0"` |  |
-| images.cloudsqlproxy | string | `"gcr.io/ml-pipeline/google/pipelines/cloudsqlproxy:1.6.0"` |  |
-| images.frontend | string | `"gcr.io/ml-pipeline/google/pipelines/frontend:1.6.0"` |  |
-| images.metadataenvoy | string | `"gcr.io/ml-pipeline/google/pipelines/metadataenvoy:1.6.0"` |  |
-| images.metadataserver | string | `"gcr.io/ml-pipeline/google/pipelines/metadataserver:1.6.0"` |  |
-| images.metadatawriter | string | `"gcr.io/ml-pipeline/google/pipelines/metadatawriter:1.6.0"` |  |
-| images.minio | string | `"gcr.io/ml-pipeline/google/pipelines/minio:1.6.0"` |  |
-| images.mysql | string | `"gcr.io/ml-pipeline/google/pipelines/mysql:1.6.0"` |  |
-| images.persistenceagent | string | `"gcr.io/ml-pipeline/google/pipelines/persistenceagent:1.6.0"` |  |
-| images.proxyagent | string | `"gcr.io/ml-pipeline/google/pipelines/proxyagent:1.6.0"` |  |
-| images.scheduledworkflow | string | `"gcr.io/ml-pipeline/google/pipelines/scheduledworkflow:1.6.0"` |  |
-| images.viewercrd | string | `"gcr.io/ml-pipeline/google/pipelines/viewercrd:1.6.0"` |  |
-| images.visualizationserver | string | `"gcr.io/ml-pipeline/google/pipelines/visualizationserver:1.6.0"` |  |
+| constants | object | `{"aws":"aws","gcp":"gcp"}` | Utility constants to use in Helm Chart templating |
+| images | object | `{"apiserver":"gcr.io/ml-pipeline/api-server:1.6.0","argoexecutor":"gcr.io/ml-pipeline/argoexec:v2.12.9-license-compliance","argoworkflowcontroller":"gcr.io/ml-pipeline/workflow-controller:v2.12.9-license-compliance","cachedeployer":"gcr.io/ml-pipeline/cache-deployer:1.6.0","cacheserver":"gcr.io/ml-pipeline/cache-server:1.6.0","cloudsqlproxy":"gcr.io/cloudsql-docker/gce-proxy:1.14","frontend":"gcr.io/ml-pipeline/frontend:1.6.0","metadataenvoy":"gcr.io/ml-pipeline/metadata-envoy:1.6.0","metadataserver":"gcr.io/tfx-oss-public/ml_metadata_store_server:0.30.0","metadatawriter":"gcr.io/ml-pipeline/metadata-writer:1.6.0","minio":"gcr.io/ml-pipeline/minio:RELEASE.2019-08-14T20-37-41Z-license-compliance","mysql":"gcr.io/ml-pipeline/mysql:5.7","persistenceagent":"gcr.io/ml-pipeline/persistenceagent:1.6.0","proxyagent":"gcr.io/ml-pipeline/inverse-proxy-agent:1.6.0","scheduledworkflow":"gcr.io/ml-pipeline/scheduledworkflow:1.6.0","viewercrd":"gcr.io/ml-pipeline/viewer-crd-controller:1.6.0","visualizationserver":"gcr.io/ml-pipeline/visualization-server:1.6.0"}` | Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.6.0 |
+| platform.aws.bucketRegion | string | `"eu-central-1"` | Region of the bucket used in `platform.managedStorage.bucketName` |
+| platform.cloud | string | `"aws"` | Configures the target cloud, possible: `aws`, `gcp` |
+| platform.gcp.cloudsqlInstanceConnectionName | string | `nil` | Fully qualified connection name to CloudSQL instance, e.g. my-gcp-project-id:europe-west1:my-sql-instance-name |
+| platform.gcp.projectId | string | `""` | GCP Project ID |
+| platform.istio.enabled | bool | `true` | Whether to enable Istio |
+| platform.istio.gateway | string | `"default/gateway"` | Name of the Istio Gateway to which the KFP UI will be attached |
+| platform.istio.host | string | `"*"` | Host on which KFP UI will be served, by default, it will be served on <host>/pipelines/ |
+| platform.managedStorage.bucketName | string | `nil` | Bucket name for KFP artifacts. Works for both S3 and GCP (only bucket name, do not put `s3://` or `gcs://` prefixes here!) |
+| platform.managedStorage.databaseNamePrefix | string | <code>"{{ .Release.Name &#124; replace \"-\" \"\_\" &#124; replace \".\" \"_\" }}"</code> | Database name prefix for KFP |
+| platform.managedStorage.dbHost | string | `"mysql"` | MySQL database host for KFP. For AWS, it should be a host of RDS. For GCP you need to leave it as mysql, as CloudSQL Proxy will be used. |
+| platform.managedStorage.dbPassword | string | `""` | MySQL database password |
+| platform.managedStorage.dbPort | int | `3306` | MySQL database port |
+| platform.managedStorage.dbUsername | string | `"root"` | MySQL database user |
+| platform.managedStorage.enabled | bool | `true` |  |
+| platform.managedStorage.minioAccessKey | string | `"minio"` | Internal keys for MinIO |
+| platform.managedStorage.minioSecretKey | string | `"minio123"` | Internal keys for MinIO |
+
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)

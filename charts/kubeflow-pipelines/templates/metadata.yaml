@@ -39,7 +39,7 @@ spec:
         imagePullPolicy: 'Always'
         env:
         # TODO: merge all into mysql-credential
-        {{ if .Values.managedstorage.enabled }}
+        {{ if .Values.platform.managedStorage.enabled }}
         - name: DBCONFIG_USER
           valueFrom:
             secretKeyRef:
@@ -137,17 +137,6 @@ spec:
               containerPort: 9090
             - name: envoy-admin
               containerPort: 9901
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: metadata-mysql-configmap
-  labels:
-    component: metadata-server
-data:
-  MYSQL_DATABASE: '{{ tpl .Values.managedstorage.databaseNamePrefix . }}_metadata'
-  MYSQL_HOST: "mysql"
-  MYSQL_PORT: "3306"
 ---
 apiVersion: v1
 kind: ConfigMap
