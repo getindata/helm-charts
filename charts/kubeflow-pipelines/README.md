@@ -20,11 +20,12 @@ GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic), adapted from
 | platform.cloud | string | `"aws"` | Configures the target cloud, possible: `aws`, `gcp` |
 | platform.gcp.cloudsqlInstanceConnectionName | string | `nil` | Fully qualified connection name to CloudSQL instance, e.g. my-gcp-project-id:europe-west1:my-sql-instance-name |
 | platform.gcp.projectId | string | `""` | GCP Project ID |
+| platform.gcp.proxyEnabled | bool | `true` | Enable or disable proxy agent. Only disable for CI. |
 | platform.istio.enabled | bool | `true` | Whether to enable Istio |
 | platform.istio.gateway | string | `"default/gateway"` | Name of the Istio Gateway to which the KFP UI will be attached |
 | platform.istio.host | string | `"*"` | Host on which KFP UI will be served, by default, it will be served on <host>/pipelines/ |
 | platform.managedStorage.bucketName | string | `nil` | Bucket name for KFP artifacts. Works for both S3 and GCP (only bucket name, do not put `s3://` or `gcs://` prefixes here!) |
-| platform.managedStorage.databaseNamePrefix | string | <code>"{{ .Release.Name &#124; replace \"-\" \"\_\" &#124; replace \".\" \"_\" }}"</code> | Database name prefix for KFP |
+| platform.managedStorage.databaseNamePrefix | string | `"{{ .Release.Name | replace \"-\" \"_\" | replace \".\" \"_\" }}"` | Database name prefix for KFP |
 | platform.managedStorage.dbHost | string | `"mysql"` | MySQL database host for KFP. For AWS, it should be a host of RDS. For GCP you need to leave it as mysql, as CloudSQL Proxy will be used. |
 | platform.managedStorage.dbPassword | string | `""` | MySQL database password |
 | platform.managedStorage.dbPort | int | `3306` | MySQL database port |

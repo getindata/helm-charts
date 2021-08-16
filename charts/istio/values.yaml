@@ -3,17 +3,3 @@ global:
   hub: gcr.io/istio-release
   # -- Image tag for all of the Istio's images. As the chart was prepared for 1.10.3, the same tag is used here
   tag: "1.10.3"
-# -- Sets various params for default Istio Gateway. Defaults to `default/gateway`.
-gateway:
-  # -- Name of the gateway.
-  name: gateway
-  # -- Namespace to which deploy the gateway.
-  namespace: default
-  # -- Servers node spec for Istio Gateway. See https://istio.io/latest/docs/reference/config/networking/gateway/
-  servers:
-  - hosts:
-      - '*'
-    port:
-      name: http
-      number: 80
-      protocol: HTTP
