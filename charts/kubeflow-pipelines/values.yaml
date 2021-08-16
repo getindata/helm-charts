@@ -1,7 +1,3 @@
-# -- Utility constants to use in Helm Chart templating
-constants:
-  gcp: "gcp"
-  aws: "aws"
 platform:
   istio:
     # -- Whether to enable Istio

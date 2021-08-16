@@ -1,4 +1,4 @@
-{{ if eq .Values.platform.cloud .Values.constants.gcp }}
+{{ if eq .Values.platform.cloud "gcp" }}
 # ServiceAccount and Service for mysql is only required if running on GCP
 apiVersion: v1
 kind: ServiceAccount
@@ -26,7 +26,7 @@ spec:
 ---
 {{ end }}
 {{ if .Values.platform.managedStorage.enabled }}
-{{ if eq .Values.platform.cloud .Values.constants.gcp }} # START: is GCP?
+{{ if eq .Values.platform.cloud "gcp" }} # START: is GCP?
 # Only GCP requires CloudProxy
 apiVersion: apps/v1
 kind: Deployment
