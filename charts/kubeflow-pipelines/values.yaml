@@ -38,6 +38,8 @@ platform:
     projectId: ""
     # -- Fully qualified connection name to CloudSQL instance, e.g. my-gcp-project-id:europe-west1:my-sql-instance-name
     cloudsqlInstanceConnectionName: ~
+    # -- Enable or disable proxy agent. Only disable for CI.
+    proxyEnabled: true
 
 
 # -- Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.6.0
@@ -59,6 +61,3 @@ images:
   metadatawriter: gcr.io/ml-pipeline/metadata-writer:1.6.0
   cacheserver: gcr.io/ml-pipeline/cache-server:1.6.0
   cachedeployer: gcr.io/ml-pipeline/cache-deployer:1.6.0
-
-
-

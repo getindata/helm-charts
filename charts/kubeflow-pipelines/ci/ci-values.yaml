@@ -1,0 +1,8 @@
+platform:
+  cloud: "gcp"
+  managedStorage:
+    enabled: false
+  istio:
+    enabled: false
+  gcp:
+    proxyEnabled: false

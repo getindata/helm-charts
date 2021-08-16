@@ -85,6 +85,7 @@ subjects:
     name: proxy-agent-runner
     namespace: {{ .Release.Namespace }}
 ---
+{{- if .Values.platform.gcp.proxyEnabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -110,6 +111,7 @@ spec:
           name: proxy-agent
       serviceAccountName: proxy-agent-runner
 ---
+{{- end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

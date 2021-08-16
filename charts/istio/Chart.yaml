@@ -1,0 +1,23 @@
+apiVersion: v2
+name: ml-platform-istio
+description: Helm Charts for Istio to install before the rest of the GiD's ML Ops Platform
+type: application
+version: 1.10.3
+appVersion: "1.10.3"
+dependencies:
+  - name: base
+    version: 1.10.3
+    repository: file://./istio-charts/base
+  - name: istio-discovery
+    version: 1.10.3
+    repository: file://./istio-charts/istio-control/istio-discovery
+  - name: istio-ingress
+    version: 1.10.3
+    repository: file://./istio-charts/gateways/istio-ingress
+  - name: istio-egress
+    version: 1.10.3
+    repository: file://./istio-charts/gateways/istio-egress
+maintainers:
+  - name: getindata
+    email: mlops@getindata.com
+    url: https://getindata.com
