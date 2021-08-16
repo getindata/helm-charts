@@ -1,0 +1,3 @@
+{{ if eq .Values.platform.cloud "aws" }}
+# Stub file for AWS specific modifications
+{{ end }}

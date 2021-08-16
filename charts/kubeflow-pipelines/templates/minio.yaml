@@ -14,7 +14,7 @@ spec:
     app: minio
     app.kubernetes.io/name: {{ .Release.Name }}
 ---
-{{ if .Values.managedstorage.enabled }}
+{{ if .Values.platform.managedStorage.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,18 +38,30 @@ spec:
       containers:
         - args:
             - gateway
+            {{- if eq .Values.platform.cloud "gcp" }}
             - gcs
             - $(PROJECT_ID)
+            {{- end }}
+            {{- if eq .Values.platform.cloud "aws" }}
+            - s3
+            - "https://s3.{{ required "Bucket region is required for AWS" .Values.platform.aws.bucketRegion }}.amazonaws.com"
+            {{- end }}
           env:
+            {{- if eq .Values.platform.cloud "gcp" }}
             - name: PROJECT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{ .Values.gcpDefaultConfigName }}"
-                  key: "project_id"
+              value: "{{ .Values.platform.gcp.projectId }}"
+            {{- end}}
             - name: MINIO_ACCESS_KEY
-              value: minio
+              valueFrom:
+                secretKeyRef:
+                  name: mlpipeline-minio-artifact
+                  key: accesskey
             - name: MINIO_SECRET_KEY
-              value: minio123
+              valueFrom:
+                secretKeyRef:
+                  name: mlpipeline-minio-artifact
+                  key: secretkey
+            # TODO - should work with IAM ootb, without explicit service accounts
             # Minio is KFP system workload and we use GCE's default service account
             # or later Workload Identity's corresponding service account.
             # So here no need to setup GOOGLE_APPLICATION_CREDENTIALS.
@@ -65,7 +77,7 @@ spec:
               memory: 100Mi
 {{ end }}
 ---
-{{ if not .Values.managedstorage.enabled }}
+{{ if not .Values.platform.managedStorage.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -105,9 +117,15 @@ spec:
             - /data
           env:
             - name: MINIO_ACCESS_KEY
-              value: minio
+              valueFrom:
+                secretKeyRef:
+                  name: mlpipeline-minio-artifact
+                  key: accesskey
             - name: MINIO_SECRET_KEY
-              value: minio123
+              valueFrom:
+                secretKeyRef:
+                  name: mlpipeline-minio-artifact
+                  key: secretkey
           image: {{ .Values.images.minio }}
           name: minio
           ports:

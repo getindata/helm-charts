@@ -1,0 +1,52 @@
+{{- if and .Values.platform.istio .Values.platform.istio.enabled }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: kubeflow-pipelines-ui-virtual-service
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  gateways:
+    - {{ .Values.platform.istio.gateway | quote }}
+  hosts:
+    - {{ .Values.platform.istio.host | quote }}
+  http:
+    - match:
+        - uri:
+            prefix: /pipelines/
+      rewrite:
+        uri: "/"
+      route:
+        - destination:
+            host: ml-pipeline-ui
+            port:
+              number: 80
+    - match:
+        - uri:
+            exact: /pipelines
+      redirect:
+        uri: /pipelines/
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: metadata-grpc-virtual-service
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+spec:
+  gateways:
+    - {{ .Values.platform.istio.gateway | quote }}
+  hosts:
+    - {{ .Values.platform.istio.host | quote }}
+  http:
+    - match:
+        - uri:
+            prefix: /ml_metadata
+      rewrite:
+        uri: /ml_metadata
+      route:
+        - destination:
+            host: metadata-envoy-service
+            port:
+              number: 9090
+{{- end }}

@@ -1,0 +1,1 @@
+This directory contains `values` files for Helm Chart Testing tool run in the CI.

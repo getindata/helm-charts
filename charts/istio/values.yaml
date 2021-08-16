@@ -1,0 +1,5 @@
+global:
+  # -- Docker image URI for all of the Istio's images. Defaults to official Istio's GCR release hub
+  hub: gcr.io/istio-release
+  # -- Image tag for all of the Istio's images. As the chart was prepared for 1.10.3, the same tag is used here
+  tag: "1.10.3"

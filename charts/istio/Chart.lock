@@ -1,0 +1,15 @@
+dependencies:
+- name: base
+  repository: file://./istio-charts/base
+  version: 1.10.3
+- name: istio-discovery
+  repository: file://./istio-charts/istio-control/istio-discovery
+  version: 1.10.3
+- name: istio-ingress
+  repository: file://./istio-charts/gateways/istio-ingress
+  version: 1.10.3
+- name: istio-egress
+  repository: file://./istio-charts/gateways/istio-egress
+  version: 1.10.3
+digest: sha256:d3ccc44ea15e7e88d6754d0bd08653a25faa3bc1cd4dbb8c1e3ac2b7b20e7f6d
+generated: "2021-08-12T13:12:19.273077+02:00"

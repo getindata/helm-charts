@@ -47,7 +47,7 @@ rules:
   resourceNames:
   - kubernetes.io/*
   verbs:
-  - approve
+  - approve # noinspection
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -179,20 +179,6 @@ spec:
       serviceAccountName: kubeflow-pipelines-cache-deployer-sa
       restartPolicy: Always
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cache-configmap
-  labels:
-    component: cache-server
-data:
-  mysql_database: '{{ tpl .Values.managedstorage.databaseNamePrefix . }}_cachedb'
-  mysql_driver: "mysql"
-  mysql_host: "mysql"
-  mysql_port: "3306"
-  cache_image: "gcr.io/google-containers/busybox"
-  cache_node_restrictions: "false"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -213,10 +199,10 @@ spec:
         app.kubernetes.io/name: {{ .Release.Name }}
     spec:
       containers:
-      - name: server
+      - name: server # TODO
         image: {{ .Values.images.cacheserver }}
         env:
-          {{ if .Values.managedstorage.enabled }}
+          {{ if .Values.platform.managedStorage.enabled }}
           - name: DBCONFIG_USER
             valueFrom:
               secretKeyRef:

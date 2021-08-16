@@ -1,4 +1,4 @@
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: scheduledworkflows.kubeflow.org
@@ -18,8 +18,12 @@ spec:
     - name: v1beta1
       served: true
       storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   labels:
@@ -39,6 +43,10 @@ spec:
     - name: v1beta1
       served: true
       storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -717,28 +725,31 @@ spec:
     spec:
       containers:
         - env:
-            {{ if .Values.managedstorage.enabled }}
+            {{ if .Values.platform.managedStorage.enabled }}
             - name: HAS_DEFAULT_BUCKET
               value: "true"
             - name: BUCKET_NAME
-              value: "{{ .Values.managedstorage.gcsBucketName }}"
-            {{ else }}
+              value: "{{ required "Bucket name is required" .Values.platform.managedStorage.bucketName }}"
+            {{ else }}# TODO I don't know if it will work :/
+{{/*            - name: HAS_DEFAULT_BUCKET*/}}
+{{/*              valueFrom:*/}}
+{{/*                configMapKeyRef:*/}}
+{{/*                  name: "{{ .Values.gcpDefaultConfigName }}"*/}}
+{{/*                  key: "has_default_bucket"*/}}
+{{/*            - name: BUCKET_NAME*/}}
+{{/*              valueFrom:*/}}
+{{/*                configMapKeyRef:*/}}
+{{/*                  name: "{{ .Values.gcpDefaultConfigName }}"*/}}
+{{/*                  key: "bucket_name"*/}}
             - name: HAS_DEFAULT_BUCKET
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{ .Values.gcpDefaultConfigName }}"
-                  key: "has_default_bucket"
+              value: "true"
             - name: BUCKET_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{ .Values.gcpDefaultConfigName }}"
-                  key: "bucket_name"
+              value: mlpipeline
             {{ end }}
+            {{ if eq .Values.platform.cloud "gcp" }}
             - name: PROJECT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: "{{ .Values.gcpDefaultConfigName }}"
-                  key: "project_id"
+              value: {{ .Values.platform.gcp.projectId }}
+            {{ end }}
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -747,11 +758,21 @@ spec:
               value: 'pipeline-runner'
             - name: OBJECTSTORECONFIG_SECURE
               value: "false"
-            {{ if .Values.managedstorage.enabled }}
+            {{ if .Values.platform.managedStorage.enabled }}
             - name: OBJECTSTORECONFIG_BUCKETNAME
-              value: "{{ .Values.managedstorage.gcsBucketName }}"
+              value: "{{ required "Bucket name is required" .Values.platform.managedStorage.bucketName }}"
+            # START: As per Kustomize definition
+            - name: OBJECTSTORECONFIG_HOST
+              value: "minio-service.{{ .Release.Namespace }}:9000"
+            - name: OBJECTSTORECONFIG_PORT
+              value: ""
+            # END:  As per Kustomize definition
+            - name: DBCONFIG_HOST
+              value: "{{ .Values.platform.managedStorage.dbHost }}"
+            - name: DBCONFIG_PORT
+              value: "{{ .Values.platform.managedStorage.dbPort }}"
             - name: DBCONFIG_DBNAME
-              value: '{{ tpl .Values.managedstorage.databaseNamePrefix . }}_pipeline'
+              value: '{{ tpl .Values.platform.managedStorage.databaseNamePrefix . }}_pipeline'
             - name: DBCONFIG_USER
               valueFrom:
                 secretKeyRef:
