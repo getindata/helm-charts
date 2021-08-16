@@ -25,36 +25,80 @@ entries:
     urls:
     - https://github.com/getindata/helm-charts/releases/download/gcloud-sqlproxy-0.20.5/gcloud-sqlproxy-0.20.5.tgz
     version: 0.20.5
+  istio:
+  - apiVersion: v2
+    appVersion: 1.10.3
+    created: "2021-08-16T13:35:16.584838917Z"
+    dependencies:
+    - name: base
+      repository: file://./istio-charts/base
+      version: 1.10.3
+    - name: istio-discovery
+      repository: file://./istio-charts/istio-control/istio-discovery
+      version: 1.10.3
+    - name: istio-ingress
+      repository: file://./istio-charts/gateways/istio-ingress
+      version: 1.10.3
+    - name: istio-egress
+      repository: file://./istio-charts/gateways/istio-egress
+      version: 1.10.3
+    description: Helm Charts adapted from Istio official repository
+    digest: 832269a47ba2419b6fec47333fac33ec14197f5e803b41ea962206addd7abd14
+    maintainers:
+    - email: mlops@getindata.com
+      name: getindata
+      url: https://getindata.com
+    name: istio
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/istio-1.10.3/istio-1.10.3.tgz
+    version: 1.10.3
   kubeflow-pipelines:
-    - apiVersion: v2
-      appVersion: 1.6.0
-      created: "2021-06-29T16:11:02.672072232Z"
-      description: Platform for building and deploying portable, scalable machine learning
-        (ML) workflows based on Docker containers
-      digest: cca180d26152d0d17a68cfb9869a03ce853e5fda6cec5fd1a62f6ac167ce678f
-      maintainers:
-        - name: GoogleCloudPlatform
-          url: https://cloud.google.com/ai-platform/
-        - name: Kubeflow
-          url: https://github.com/kubeflow/pipelines
-      name: kubeflow-pipelines
-      type: application
-      urls:
-        - https://github.com/getindata/helm-charts/releases/download/kubeflow-pipelines-0.1.0/kubeflow-pipelines-0.1.0.tgz
-      version: 0.1.0
+  - apiVersion: v2
+    appVersion: 1.6.0
+    created: "2021-08-16T13:35:16.710845395Z"
+    description: GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic),
+      adapted from official GCP Helm Chart
+    digest: effaedaa3b416a9faf8d2e93def5fd44feb9583dc185a3dc1bf7dacabce499a8
+    icon: https://getindata.com/img/favicon-32x32.png
+    maintainers:
+    - email: mlops@getindata.com
+      name: getindata
+      url: https://getindata.com
+    name: kubeflow-pipelines
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/kubeflow-pipelines-1.6.0/kubeflow-pipelines-1.6.0.tgz
+    version: 1.6.0
+  - apiVersion: v2
+    appVersion: 1.6.0
+    created: "2021-06-29T16:11:02.672072232Z"
+    description: Platform for building and deploying portable, scalable machine learning
+      (ML) workflows based on Docker containers
+    digest: cca180d26152d0d17a68cfb9869a03ce853e5fda6cec5fd1a62f6ac167ce678f
+    maintainers:
+    - name: GoogleCloudPlatform
+      url: https://cloud.google.com/ai-platform/
+    - name: Kubeflow
+      url: https://github.com/kubeflow/pipelines
+    name: kubeflow-pipelines
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/kubeflow-pipelines-0.1.0/kubeflow-pipelines-0.1.0.tgz
+    version: 0.1.0
   mlflow:
-    - apiVersion: v2
-      appVersion: 1.18.0
-      created: "2021-06-29T11:34:36.386461083Z"
-      description: MLflow - an open source platform for the machine learning lifecycle
-      digest: cf547ba0d2c1b936099d03c540b1e95528fbf655916bd0758ca48f912108ecff
-      maintainers:
-        - email: mlops@getindata.com
-          name: getindata
-          url: https://getindata.com
-      name: mlflow
-      type: application
-      urls:
-        - https://github.com/getindata/helm-charts/releases/download/mlflow-0.1.1/mlflow-0.1.1.tgz
-      version: 0.1.1
-generated: "2021-06-29T16:24:16.320625952Z"
+  - apiVersion: v2
+    appVersion: 1.18.0
+    created: "2021-06-29T11:34:36.386461083Z"
+    description: MLflow - an open source platform for the machine learning lifecycle
+    digest: cf547ba0d2c1b936099d03c540b1e95528fbf655916bd0758ca48f912108ecff
+    maintainers:
+    - email: mlops@getindata.com
+      name: getindata
+      url: https://getindata.com
+    name: mlflow
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/mlflow-0.1.1/mlflow-0.1.1.tgz
+    version: 0.1.1
+generated: "2021-08-16T13:35:16.710853295Z"
