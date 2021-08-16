@@ -39,7 +39,7 @@ jobs:
         run: ct lint --config .github/config/ct.yaml
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.0.0
+        uses: helm/kind-action@v1.2.0
         with:
           wait: 180s
         if: steps.list-changed.outputs.changed == 'true'
