@@ -1,10 +1,13 @@
 # istio
 
-![Version: 1.10.3](https://img.shields.io/badge/Version-1.10.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.10.3](https://img.shields.io/badge/AppVersion-1.10.3-informational?style=flat-square)
+![Version: 1.11.1](https://img.shields.io/badge/Version-1.11.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.11.1](https://img.shields.io/badge/AppVersion-1.11.1-informational?style=flat-square)
 
 Helm Charts adapted from Istio official repository
 
 ## Additional info
+Charts under `istio-charts` directory were downloaded from official Istio release:
+https://github.com/istio/istio/releases/tag/1.11.1
+
 The chart requires to be installed in `istio-system` namespace.
 
 ## Maintainers
@@ -17,10 +20,10 @@ The chart requires to be installed in `istio-system` namespace.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| file://./istio-charts/base | base | 1.10.3 |
-| file://./istio-charts/gateways/istio-egress | istio-egress | 1.10.3 |
-| file://./istio-charts/gateways/istio-ingress | istio-ingress | 1.10.3 |
-| file://./istio-charts/istio-control/istio-discovery | istio-discovery | 1.10.3 |
+| file://./istio-charts/base | base | 1.11.1 |
+| file://./istio-charts/gateways/istio-egress | istio-egress | 1.11.1 |
+| file://./istio-charts/gateways/istio-ingress | istio-ingress | 1.11.1 |
+| file://./istio-charts/istio-control/istio-discovery | istio-discovery | 1.11.1 |
 
 ## Values
 

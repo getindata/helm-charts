@@ -1,6 +1,6 @@
 # istio-discovery
 
-![Version: 1.10.3](https://img.shields.io/badge/Version-1.10.3-informational?style=flat-square)
+![Version: 1.11.1](https://img.shields.io/badge/Version-1.11.1-informational?style=flat-square)
 
 Helm chart for istio control plane
 
@@ -14,6 +14,8 @@ Helm chart for istio control plane
 |-----|------|---------|-------------|
 | base.enableIstioConfigCRDs | bool | `true` |  |
 | global.caAddress | string | `""` |  |
+| global.configCluster | bool | `false` |  |
+| global.configValidation | bool | `true` |  |
 | global.defaultPodDisruptionBudget.enabled | bool | `true` |  |
 | global.defaultResources.requests.cpu | string | `"10m"` |  |
 | global.externalIstiod | bool | `false` |  |
@@ -65,7 +67,7 @@ Helm chart for istio control plane
 | global.remotePilotAddress | string | `""` |  |
 | global.sds.token.aud | string | `"istio-ca"` |  |
 | global.sts.servicePort | int | `0` |  |
-| global.tag | string | `"1.10.3"` |  |
+| global.tag | string | `"1.11.1"` |  |
 | global.tracer.datadog.address | string | `"$(HOST_IP):8126"` |  |
 | global.tracer.lightstep.accessToken | string | `""` |  |
 | global.tracer.lightstep.address | string | `""` |  |
@@ -75,6 +77,7 @@ Helm chart for istio control plane
 | global.tracer.stackdriver.maxNumberOfMessageEvents | int | `200` |  |
 | global.tracer.zipkin.address | string | `""` |  |
 | global.useMCP | bool | `false` |  |
+| istiodRemote.injectionPath | string | `"/inject"` |  |
 | istiodRemote.injectionURL | string | `""` |  |
 | meshConfig.enablePrometheusMerge | bool | `true` |  |
 | meshConfig.rootNamespace | string | `nil` |  |
@@ -115,7 +118,6 @@ Helm chart for istio control plane
 | sidecarInjectorWebhook.objectSelector.enabled | bool | `true` |  |
 | sidecarInjectorWebhook.rewriteAppHTTPProbe | bool | `true` |  |
 | sidecarInjectorWebhook.templates | object | `{}` |  |
-| sidecarInjectorWebhook.useLegacySelectors | bool | `false` |  |
 | telemetry.enabled | bool | `true` |  |
 | telemetry.v2.accessLogPolicy.enabled | bool | `false` |  |
 | telemetry.v2.accessLogPolicy.logWindowDuration | string | `"43200s"` |  |

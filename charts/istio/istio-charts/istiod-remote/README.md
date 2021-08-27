@@ -1,8 +1,8 @@
-# istiod-remote
+# config
 
-![Version: 1.10.3](https://img.shields.io/badge/Version-1.10.3-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square)
 
-Helm chart for istio control plane configuration for remote clusters
+Helm chart for a remote cluster using an external istio control plane
 
 ## Source Code
 
@@ -14,10 +14,12 @@ Helm chart for istio control plane configuration for remote clusters
 |-----|------|---------|-------------|
 | base.enableIstioConfigCRDs | bool | `true` |  |
 | global.caAddress | string | `""` |  |
+| global.configCluster | bool | `false` |  |
+| global.configValidation | bool | `true` |  |
 | global.defaultPodDisruptionBudget.enabled | bool | `true` |  |
 | global.defaultResources.requests.cpu | string | `"10m"` |  |
 | global.externalIstiod | bool | `true` |  |
-| global.hub | string | `"docker.io/istio"` |  |
+| global.hub | string | `"gcr.io/istio-testing"` |  |
 | global.imagePullPolicy | string | `""` |  |
 | global.imagePullSecrets | list | `[]` |  |
 | global.istioNamespace | string | `"istio-system"` |  |
@@ -31,7 +33,7 @@ Helm chart for istio control plane configuration for remote clusters
 | global.multiCluster.clusterName | string | `""` |  |
 | global.multiCluster.enabled | bool | `false` |  |
 | global.network | string | `""` |  |
-| global.omitSidecarInjectorConfigMap | bool | `false` |  |
+| global.omitSidecarInjectorConfigMap | bool | `true` |  |
 | global.oneNamespace | bool | `false` |  |
 | global.operatorManageWebhooks | bool | `false` |  |
 | global.pilotCertProvider | string | `"istiod"` |  |
@@ -65,7 +67,7 @@ Helm chart for istio control plane configuration for remote clusters
 | global.remotePilotAddress | string | `""` |  |
 | global.sds.token.aud | string | `"istio-ca"` |  |
 | global.sts.servicePort | int | `0` |  |
-| global.tag | string | `"1.10.3"` |  |
+| global.tag | string | `"latest"` |  |
 | global.tracer.datadog.address | string | `"$(HOST_IP):8126"` |  |
 | global.tracer.lightstep.accessToken | string | `""` |  |
 | global.tracer.lightstep.address | string | `""` |  |
@@ -75,6 +77,7 @@ Helm chart for istio control plane configuration for remote clusters
 | global.tracer.stackdriver.maxNumberOfMessageEvents | int | `200` |  |
 | global.tracer.zipkin.address | string | `""` |  |
 | global.useMCP | bool | `false` |  |
+| istiodRemote.injectionPath | string | `"/inject"` |  |
 | istiodRemote.injectionURL | string | `""` |  |
 | meshConfig.enablePrometheusMerge | bool | `true` |  |
 | meshConfig.rootNamespace | string | `nil` |  |
@@ -83,7 +86,7 @@ Helm chart for istio control plane configuration for remote clusters
 | pilot.autoscaleEnabled | bool | `true` |  |
 | pilot.autoscaleMax | int | `5` |  |
 | pilot.autoscaleMin | int | `1` |  |
-| pilot.configMap | bool | `true` |  |
+| pilot.configMap | bool | `false` |  |
 | pilot.configSource.subscribedResources | list | `[]` |  |
 | pilot.cpu.targetAverageUtilization | int | `80` |  |
 | pilot.deploymentLabels | object | `{}` |  |
@@ -115,7 +118,6 @@ Helm chart for istio control plane configuration for remote clusters
 | sidecarInjectorWebhook.objectSelector.enabled | bool | `true` |  |
 | sidecarInjectorWebhook.rewriteAppHTTPProbe | bool | `true` |  |
 | sidecarInjectorWebhook.templates | object | `{}` |  |
-| sidecarInjectorWebhook.useLegacySelectors | bool | `false` |  |
 | telemetry.enabled | bool | `false` |  |
 | telemetry.v2.accessLogPolicy.enabled | bool | `false` |  |
 | telemetry.v2.accessLogPolicy.logWindowDuration | string | `"43200s"` |  |
