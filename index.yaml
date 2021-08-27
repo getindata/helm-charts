@@ -27,6 +27,33 @@ entries:
     version: 0.20.5
   istio:
   - apiVersion: v2
+    appVersion: 1.11.1
+    created: "2021-08-27T13:35:33.024770844Z"
+    dependencies:
+    - name: base
+      repository: file://./istio-charts/base
+      version: 1.11.1
+    - name: istio-discovery
+      repository: file://./istio-charts/istio-control/istio-discovery
+      version: 1.11.1
+    - name: istio-ingress
+      repository: file://./istio-charts/gateways/istio-ingress
+      version: 1.11.1
+    - name: istio-egress
+      repository: file://./istio-charts/gateways/istio-egress
+      version: 1.11.1
+    description: Helm Charts adapted from Istio official repository
+    digest: 6e674d65e758e5cc4ffadb2ba5522b327eaaa0b0b4f6df990ae01c4d77bd35e2
+    maintainers:
+    - email: mlops@getindata.com
+      name: getindata
+      url: https://getindata.com
+    name: istio
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/istio-1.11.1/istio-1.11.1.tgz
+    version: 1.11.1
+  - apiVersion: v2
     appVersion: 1.10.3
     created: "2021-08-16T13:35:16.584838917Z"
     dependencies:
@@ -117,4 +144,4 @@ entries:
     urls:
     - https://github.com/getindata/helm-charts/releases/download/mlflow-0.1.1/mlflow-0.1.1.tgz
     version: 0.1.1
-generated: "2021-08-25T08:26:29.836790882Z"
+generated: "2021-08-27T13:35:33.024792244Z"
