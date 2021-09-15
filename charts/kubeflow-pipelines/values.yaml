@@ -1,11 +1,4 @@
 platform:
-  istio:
-    # -- Whether to enable Istio
-    enabled: true
-    # -- Name of the Istio Gateway to which the KFP UI will be attached
-    gateway: default/gateway
-    # -- Host on which KFP UI will be served, by default, it will be served on <host>/pipelines/
-    host: "*"
   # -- Configures the target cloud, possible: `aws`, `gcp`
   cloud: aws
   managedStorage:
