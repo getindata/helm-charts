@@ -40,7 +40,7 @@ images:
   frontend: gcr.io/ml-pipeline/frontend:1.8.2
   metadataserver: gcr.io/tfx-oss-public/ml_metadata_store_server:0.30.0
   minio: minio/minio:RELEASE.2021-08-20T18-32-01Z
-  mysql: gcr.io/ml-pipeline/mysql:5.7
+  mysql: gcr.io/ml-pipeline/mysql:8.0
   persistenceagent: gcr.io/ml-pipeline/persistenceagent:1.8.2
   proxyagent: gcr.io/ml-pipeline/inverse-proxy-agent:1.8.2
   scheduledworkflow: gcr.io/ml-pipeline/scheduledworkflow:1.8.2
