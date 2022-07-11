@@ -47,7 +47,7 @@ rules:
   resourceNames:
   - kubernetes.io/*
   verbs:
-  - approve # noinspection
+  - approve
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -199,7 +199,7 @@ spec:
         app.kubernetes.io/name: {{ .Release.Name }}
     spec:
       containers:
-      - name: server # TODO
+      - name: server
         image: {{ .Values.images.cacheserver }}
         env:
           {{ if .Values.platform.managedStorage.enabled }}
