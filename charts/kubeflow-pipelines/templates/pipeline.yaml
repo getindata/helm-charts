@@ -16,12 +16,29 @@ spec:
   scope: Namespaced
   versions:
     - name: v1beta1
-      served: true
-      storage: true
       schema:
         openAPIV3Schema:
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+              x-kubernetes-map-type: atomic
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+              x-kubernetes-map-type: atomic
+          required:
+          - spec
+          - status
           type: object
-          x-kubernetes-preserve-unknown-fields: true
+      served: true
+      storage: true
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -41,12 +58,24 @@ spec:
   scope: Namespaced
   versions:
     - name: v1beta1
-      served: true
-      storage: true
       schema:
         openAPIV3Schema:
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+              x-kubernetes-map-type: atomic
+          required:
+          - spec
           type: object
-          x-kubernetes-preserve-unknown-fields: true
+      served: true
+      storage: true
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -850,3 +879,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kubeflow-pipelines-container-builder
+{{ if and  .Values.platform.managedStorage.enabled  ( eq .Values.platform.cloud "gcp")  }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kfp-launcher
+data:
+  defaultPipelineRoot: 'gs://{{ .Values.managedStorage.bucketName }}/v2/artifacts'
+{{ end }}
