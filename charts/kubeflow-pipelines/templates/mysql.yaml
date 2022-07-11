@@ -132,9 +132,12 @@ spec:
           args:
           # https://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_ignore-db-dir
           # Ext4, Btrfs etc. volumes root directories have a lost+found directory that should not be treated as a database.
-          - --ignore-db-dir=lost+found
+          # - --ignore-db-dir=lost+found more: https://dev.mysql.com/doc/refman/8.0/en/upgrade-prerequisites.html
+          # mysql_native_password: https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded
           - --datadir
           - /var/lib/mysql
+          - --default-authentication-plugin=mysql_native_password
+          - --upgrade=FORCE
           env:
             - name: MYSQL_ALLOW_EMPTY_PASSWORD
               value: "true"
