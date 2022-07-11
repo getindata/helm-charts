@@ -15,23 +15,41 @@ spec:
     singular: workflow
   scope: Namespaced
   versions:
-  - name: v1alpha1
-    served: true
-    storage: true
-    additionalPrinterColumns:
-    - jsonPath: .status.phase
-      description: Status of the workflow
+  - additionalPrinterColumns:
+    - description: Status of the workflow
+      jsonPath: .status.phase
       name: Status
       type: string
-    - jsonPath: .status.startedAt
-      description: When the workflow was started
+    - description: When the workflow was started
       format: date-time
+      jsonPath: .status.startedAt
       name: Age
       type: date
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+        required:
+        - metadata
+        - spec
         type: object
-        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources: {}
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -52,12 +70,25 @@ spec:
   scope: Cluster
   versions:
   - name: v1alpha1
-    served: true
-    storage: true
     schema:
       openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+        required:
+        - metadata
+        - spec
         type: object
-        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -78,12 +109,29 @@ spec:
   scope: Namespaced
   versions:
   - name: v1alpha1
-    served: true
-    storage: true
     schema:
       openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+          status:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+        required:
+        - metadata
+        - spec
         type: object
-        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -103,12 +151,25 @@ spec:
   scope: Namespaced
   versions:
   - name: v1alpha1
-    served: true
-    storage: true
     schema:
       openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+        required:
+        - metadata
+        - spec
         type: object
-        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -128,12 +189,25 @@ spec:
   scope: Namespaced
   versions:
   - name: v1alpha1
-    served: true
-    storage: true
     schema:
       openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            x-kubernetes-map-type: atomic
+            x-kubernetes-preserve-unknown-fields: true
+        required:
+        - metadata
+        - spec
         type: object
-        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -149,6 +223,14 @@ metadata:
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 rules:
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - get
+  - update
 - apiGroups:
   - ""
   resources:
@@ -256,6 +338,33 @@ subjects:
     name: argo
     namespace: "{{ .Release.Namespace }}"
 ---
+apiVersion: v1
+data:
+  # References:
+  # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/config/config.go
+  # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/docs/workflow-controller-configmap.md
+  # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/docs/workflow-controller-configmap.yaml
+
+  # emissary executor is a more portable default, see https://github.com/kubeflow/pipelines/issues/1654.
+  containerRuntimeExecutor: '{{ if .Values.executor.emissary }}emissary{{ else }}docker{{ end }}'
+
+kind: ConfigMap
+metadata:
+  name: workflow-controller-configmap
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+---
+apiVersion: v1
+data:
+  accesskey: bWluaW8=
+  secretkey: bWluaW8xMjM=
+kind: Secret
+metadata:
+  name: mlpipeline-minio-artifact
+  labels:
+    app.kubernetes.io/name: "{{ .Release.Name }}"
+type: Opaque
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -286,26 +395,36 @@ spec:
             - --executor-image
             - "{{ .Values.images.argoexecutor }}"
             - --namespaced
+          env:
+          - name: LEADER_ELECTION_IDENTITY
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
           ports:
             - name: metrics
               containerPort: 9090
-          # Periodically check we are listening on the metrics port
-          # causing a restart if it is not OK.
-          # This takes advantage of the fact that if the metrics service has died,
-          # then the controller has died.
-          # In testing, it appears to take 60-90s from failure to restart.
+            - containerPort: 6060
           livenessProbe:
+            failureThreshold: 3
             httpGet:
-              port: metrics
-              path: /metrics
-            initialDelaySeconds: 30
-            periodSeconds: 30
+              path: /healthz
+              port: 6060
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 30
           resources:
             requests:
               cpu: 100m
               memory: 500Mi
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
       nodeSelector:
         kubernetes.io/os: linux
+      securityContext:
+        runAsNonRoot: true
