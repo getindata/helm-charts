@@ -38,7 +38,7 @@ images:
   argoworkflowcontroller: gcr.io/ml-pipeline/workflow-controller:v2.12.9-license-compliance
   cloudsqlproxy: gcr.io/cloudsql-docker/gce-proxy:1.14
   frontend: gcr.io/ml-pipeline/frontend:1.8.2
-  metadataserver: gcr.io/tfx-oss-public/ml_metadata_store_server:0.30.0
+  metadataserver: gcr.io/tfx-oss-public/ml_metadata_store_server:1.9.0
   minio: minio/minio:RELEASE.2021-08-20T18-32-01Z
   mysql: gcr.io/ml-pipeline/mysql:8.0
   persistenceagent: gcr.io/ml-pipeline/persistenceagent:1.8.2
