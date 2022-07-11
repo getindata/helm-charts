@@ -82,6 +82,22 @@ entries:
     version: 1.10.3
   kubeflow-pipelines:
   - apiVersion: v2
+    appVersion: 1.8.2
+    created: "2022-07-11T10:02:40.213072986Z"
+    description: GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic),
+      adapted from official GCP Helm Chart
+    digest: 81bd0fd03659ee61f21ae2e8adae4632dd4c4de076a0e08edd9bb31b49a4e695
+    icon: https://getindata.com/img/favicon-32x32.png
+    maintainers:
+    - email: mlops@getindata.com
+      name: getindata
+      url: https://getindata.com
+    name: kubeflow-pipelines
+    type: application
+    urls:
+    - https://github.com/getindata/helm-charts/releases/download/kubeflow-pipelines-1.8.2/kubeflow-pipelines-1.8.2.tgz
+    version: 1.8.2
+  - apiVersion: v2
     appVersion: 1.6.0
     created: "2021-09-15T11:53:51.573423648Z"
     description: GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic),
@@ -160,4 +176,4 @@ entries:
     urls:
     - https://github.com/getindata/helm-charts/releases/download/mlflow-0.1.1/mlflow-0.1.1.tgz
     version: 0.1.1
-generated: "2021-09-15T11:53:51.573437248Z"
+generated: "2022-07-11T10:02:40.213094486Z"
