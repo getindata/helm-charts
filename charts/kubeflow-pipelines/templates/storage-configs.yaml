@@ -1,12 +1,13 @@
 apiVersion: v1
 data:
   # References:
-  # * https://github.com/argoproj/argo-workflows/blob/v2.12.9/config/config.go
-  # * https://github.com/argoproj/argo-workflows/blob/v2.12.9/docs/workflow-controller-configmap.md
-  # * https://github.com/argoproj/argo-workflows/blob/v2.12.9/docs/workflow-controller-configmap.yaml
+  # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/config/config.go
+  # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/docs/workflow-controller-configmap.md
+  # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/docs/workflow-controller-configmap.yaml
 
-  # pns executor is a more portable default, see https://github.com/kubeflow/pipelines/issues/1654.
-  containerRuntimeExecutor: pns
+  # emissary executor is a more portable but keeping pns as default, see https://github.com/kubeflow/pipelines/issues/1654.
+  containerRuntimeExecutor: '{{ if .Values.executor.emissary }}emissary{{ else }}pns{{ end }}'
+
 
   # Note, {{ `some-string-{{without}}-template-interpretation` }} is a way to avoid some brackets interpreted as template.
   # Reference: https://github.com/helm/helm/issues/2798#issuecomment-467319526
@@ -29,6 +30,7 @@ metadata:
   name: workflow-controller-configmap
   labels:
     app.kubernetes.io/name: "{{ .Release.Name }}"
+
 ---
 apiVersion: v1
 data:
