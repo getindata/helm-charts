@@ -30,6 +30,8 @@ platform:
     # -- Enable or disable proxy agent. Only disable for CI.
     proxyEnabled: true
 
+executor:
+  emissary: false
 
 # -- Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.8.2
 images:
