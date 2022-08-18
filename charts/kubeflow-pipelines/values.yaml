@@ -29,19 +29,22 @@ platform:
     cloudsqlInstanceConnectionName: ~
     # -- Enable or disable proxy agent. Only disable for CI.
     proxyEnabled: true
+  azure:
+    storageAccountName: ""
+    storageAccountKey: ""
 
-executor:
-  emissary: false
+executor: "emissary"
 
 # -- Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.8.2
 images:
   apiserver: gcr.io/ml-pipeline/api-server:1.8.2
-  argoexecutor: gcr.io/ml-pipeline/argoexec:v2.12.9-license-compliance
-  argoworkflowcontroller: gcr.io/ml-pipeline/workflow-controller:v2.12.9-license-compliance
+  argoexecutor: gcr.io/ml-pipeline/argoexec:v3.1.14-license-compliance
+  argoworkflowcontroller: gcr.io/ml-pipeline/workflow-controller:v3.1.14-license-compliance
   cloudsqlproxy: gcr.io/cloudsql-docker/gce-proxy:1.14
   frontend: gcr.io/ml-pipeline/frontend:1.8.2
   metadataserver: gcr.io/tfx-oss-public/ml_metadata_store_server:1.9.0
   minio: minio/minio:RELEASE.2022-07-08T00-05-23Z
+  minioAzure: minio/minio:RELEASE.2022-04-26T01-20-24Z
   mysql: gcr.io/ml-pipeline/mysql:8.0
   persistenceagent: gcr.io/ml-pipeline/persistenceagent:1.8.2
   proxyagent: gcr.io/ml-pipeline/inverse-proxy-agent:1.8.2
