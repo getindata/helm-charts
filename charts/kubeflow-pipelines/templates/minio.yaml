@@ -72,11 +72,7 @@ spec:
             # So here no need to setup GOOGLE_APPLICATION_CREDENTIALS.
             # - name: GOOGLE_APPLICATION_CREDENTIALS
             #  value: "/etc/credentials/application_default_credentials.json"
-          {{- if eq .Values.platform.cloud "azure" }}
-          image: {{ .Values.images.minioAzure }}
-          {{ else }}
           image: {{ .Values.images.minio }}
-          {{- end }}
           name: minio
           ports:
             - containerPort: 9000
