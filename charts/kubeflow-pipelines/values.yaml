@@ -13,7 +13,7 @@ platform:
     dbUsername: 'root'
     # -- MySQL database password
     dbPassword: ''
-    # -- Bucket name for KFP artifacts. Works for both S3 and GCP (only bucket name, do not put `s3://` or `gcs://` prefixes here!)
+    # -- Bucket (or Container for Azure) name for KFP artifacts. Works for S3, GCP and Azure (only bucket/container name, do not put `s3://`, `gcs://` or `wasb://` prefixes here!)
     bucketName: ~
     # -- Internal keys for MinIO
     minioAccessKey: minio
@@ -30,9 +30,12 @@ platform:
     # -- Enable or disable proxy agent. Only disable for CI.
     proxyEnabled: true
   azure:
+    # -- Azure Storage Account Name
     storageAccountName: ""
+    # -- Azure Storage Account Key
     storageAccountKey: ""
 
+# -- Name of Argo executor (default is emissary). See https://argoproj.github.io/argo-workflows/workflow-executors/
 executor: "emissary"
 
 # -- Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.8.2
