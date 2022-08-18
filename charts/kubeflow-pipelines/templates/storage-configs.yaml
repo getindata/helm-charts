@@ -47,18 +47,6 @@ metadata:
     app.kubernetes.io/name: "{{ .Release.Name }}"
 type: Opaque
 ---
-{{- if eq .Values.platform.cloud "azure" }}
-apiVersion: v1
-data:
-  storageAccountKey: {{ .Values.platform.azure.storageAccountKey | b64enc }}
-kind: Secret
-metadata:
-  name: minio-azure-storage-account-key
-  labels:
-    app.kubernetes.io/name: "{{ .Release.Name }}"
-type: Opaque
----
-{{- end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
