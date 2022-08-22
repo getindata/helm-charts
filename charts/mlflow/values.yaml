@@ -1,10 +1,10 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/getindata-images-public/mlflow-gcp
+  repository: gcr.io/getindata-images-public/mlflow
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion
-  tag: ""
+  tag: "gcp-aws-1.28.0"
 
 persistence:
   # -- Specifies where artifacts are recorded, can be S3, GCS or local filepath.
