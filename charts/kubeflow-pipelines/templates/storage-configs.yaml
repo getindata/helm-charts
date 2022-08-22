@@ -6,8 +6,7 @@ data:
   # * https://github.com/argoproj/argo-workflows/blob/v3.2.3/docs/workflow-controller-configmap.yaml
 
   # emissary executor is a more portable but keeping pns as default, see https://github.com/kubeflow/pipelines/issues/1654.
-  containerRuntimeExecutor: '{{ if .Values.executor.emissary }}emissary{{ else }}pns{{ end }}'
-
+  containerRuntimeExecutor: "{{ .Values.executor }}"
 
   # Note, {{ `some-string-{{without}}-template-interpretation` }} is a way to avoid some brackets interpreted as template.
   # Reference: https://github.com/helm/helm/issues/2798#issuecomment-467319526
@@ -34,8 +33,13 @@ metadata:
 ---
 apiVersion: v1
 data:
+  {{- if eq .Values.platform.cloud "azure" }}
+  accesskey: {{ .Values.platform.azure.storageAccountName | b64enc }}
+  secretkey: {{ .Values.platform.azure.storageAccountKey | b64enc }}
+  {{- else }}
   accesskey: {{ .Values.platform.managedStorage.minioAccessKey | b64enc }}
   secretkey: {{ .Values.platform.managedStorage.minioSecretKey | b64enc }}
+  {{- end }}
 kind: Secret
 metadata:
   name: mlpipeline-minio-artifact

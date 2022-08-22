@@ -46,6 +46,9 @@ spec:
             - s3
             - "https://s3.{{ required "Bucket region is required for AWS" .Values.platform.aws.bucketRegion }}.amazonaws.com"
             {{- end }}
+            {{- if eq .Values.platform.cloud "azure" }}
+            - azure
+            {{- end }}
             - "--console-address"
             - ":9001"
           env:

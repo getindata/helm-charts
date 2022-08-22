@@ -28,7 +28,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -37,6 +36,10 @@ spec:
               value: {{ tpl .Values.persistence.backendStoreUri . }}
             - name: DEFAULT_ARTIFACT_ROOT
               value: {{ tpl .Values.persistence.defaultArtifactRoot . }}
+            {{- range .Values.environmentVariables }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080

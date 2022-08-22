@@ -1,6 +1,6 @@
 # kubeflow-pipelines
 
-![Version: 1.9.0](https://img.shields.io/badge/Version-1.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.8.2](https://img.shields.io/badge/AppVersion-1.8.2-informational?style=flat-square)
+![Version: 1.10.0](https://img.shields.io/badge/Version-1.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.8.2](https://img.shields.io/badge/AppVersion-1.8.2-informational?style=flat-square)
 
 GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic), adapted from official GCP Helm Chart
 
@@ -14,15 +14,17 @@ GetInData ML Ops Platform - Kubeflow Pipelines (Platform Agnostic), adapted from
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| executor.emissary | bool | `false` |  |
-| images | object | `{"apiserver":"gcr.io/ml-pipeline/api-server:1.8.2","argoexecutor":"gcr.io/ml-pipeline/argoexec:v2.12.9-license-compliance","argoworkflowcontroller":"gcr.io/ml-pipeline/workflow-controller:v2.12.9-license-compliance","cachedeployer":"gcr.io/ml-pipeline/cache-deployer:1.8.2","cacheserver":"gcr.io/ml-pipeline/cache-server:1.8.2","cloudsqlproxy":"gcr.io/cloudsql-docker/gce-proxy:1.14","frontend":"gcr.io/ml-pipeline/frontend:1.8.2","metadataenvoy":"gcr.io/ml-pipeline/metadata-envoy:1.8.2","metadataserver":"gcr.io/tfx-oss-public/ml_metadata_store_server:1.9.0","metadatawriter":"gcr.io/ml-pipeline/metadata-writer:1.8.2","minio":"minio/minio:RELEASE.2022-07-08T00-05-23Z","mysql":"gcr.io/ml-pipeline/mysql:8.0","persistenceagent":"gcr.io/ml-pipeline/persistenceagent:1.8.2","proxyagent":"gcr.io/ml-pipeline/inverse-proxy-agent:1.8.2","scheduledworkflow":"gcr.io/ml-pipeline/scheduledworkflow:1.8.2","viewercrd":"gcr.io/ml-pipeline/viewer-crd-controller:1.8.2","visualizationserver":"gcr.io/ml-pipeline/visualization-server:1.8.2"}` | Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.8.2 |
+| executor | string | `"emissary"` | Name of Argo executor (default is emissary). See https://argoproj.github.io/argo-workflows/workflow-executors/ |
+| images | object | `{"apiserver":"gcr.io/ml-pipeline/api-server:1.8.2","argoexecutor":"gcr.io/ml-pipeline/argoexec:v3.1.14-license-compliance","argoworkflowcontroller":"gcr.io/ml-pipeline/workflow-controller:v3.1.14-license-compliance","cachedeployer":"gcr.io/ml-pipeline/cache-deployer:1.8.2","cacheserver":"gcr.io/ml-pipeline/cache-server:1.8.2","cloudsqlproxy":"gcr.io/cloudsql-docker/gce-proxy:1.14","frontend":"gcr.io/ml-pipeline/frontend:1.8.2","metadataenvoy":"gcr.io/ml-pipeline/metadata-envoy:1.8.2","metadataserver":"gcr.io/tfx-oss-public/ml_metadata_store_server:1.9.0","metadatawriter":"gcr.io/ml-pipeline/metadata-writer:1.8.2","minio":"minio/minio:RELEASE.2022-07-08T00-05-23Z","minioAzure":"minio/minio:RELEASE.2022-04-26T01-20-24Z","mysql":"gcr.io/ml-pipeline/mysql:8.0","persistenceagent":"gcr.io/ml-pipeline/persistenceagent:1.8.2","proxyagent":"gcr.io/ml-pipeline/inverse-proxy-agent:1.8.2","scheduledworkflow":"gcr.io/ml-pipeline/scheduledworkflow:1.8.2","viewercrd":"gcr.io/ml-pipeline/viewer-crd-controller:1.8.2","visualizationserver":"gcr.io/ml-pipeline/visualization-server:1.8.2"}` | Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.8.2 |
 | platform.aws.bucketRegion | string | `"eu-central-1"` | Region of the bucket used in `platform.managedStorage.bucketName` |
+| platform.azure.storageAccountKey | string | `""` | Azure Storage Account Key |
+| platform.azure.storageAccountName | string | `""` | Azure Storage Account Name |
 | platform.cloud | string | `"aws"` | Configures the target cloud, possible: `aws`, `gcp` |
 | platform.gcp.cloudsqlInstanceConnectionName | string | `nil` | Fully qualified connection name to CloudSQL instance, e.g. my-gcp-project-id:europe-west1:my-sql-instance-name |
 | platform.gcp.projectId | string | `""` | GCP Project ID |
 | platform.gcp.proxyEnabled | bool | `true` | Enable or disable proxy agent. Only disable for CI. |
-| platform.managedStorage.bucketName | string | `nil` | Bucket name for KFP artifacts. Works for both S3 and GCP (only bucket name, do not put `s3://` or `gcs://` prefixes here!) |
-| platform.managedStorage.databaseNamePrefix | string | <code>"{{ .Release.Name &#124; replace \"-\" \"_\" &#124; replace \".\" \"_\" }}"<\code> | Database name prefix for KFP |
+| platform.managedStorage.bucketName | string | `nil` | Bucket (or Container for Azure) name for KFP artifacts. Works for S3, GCP and Azure (only bucket/container name, do not put `s3://`, `gcs://` or `wasb://` prefixes here!) |
+| platform.managedStorage.databaseNamePrefix | string | `"{{ .Release.Name | replace \"-\" \"_\" | replace \".\" \"_\" }}"` | Database name prefix for KFP |
 | platform.managedStorage.dbHost | string | `"mysql"` | MySQL database host for KFP. For AWS, it should be a host of RDS. For GCP you need to leave it as mysql, as CloudSQL Proxy will be used. |
 | platform.managedStorage.dbPassword | string | `""` | MySQL database password |
 | platform.managedStorage.dbPort | int | `3306` | MySQL database port |

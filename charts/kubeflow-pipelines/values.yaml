@@ -13,7 +13,7 @@ platform:
     dbUsername: 'root'
     # -- MySQL database password
     dbPassword: ''
-    # -- Bucket name for KFP artifacts. Works for both S3 and GCP (only bucket name, do not put `s3://` or `gcs://` prefixes here!)
+    # -- Bucket (or Container for Azure) name for KFP artifacts. Works for S3, GCP and Azure (only bucket/container name, do not put `s3://`, `gcs://` or `wasb://` prefixes here!)
     bucketName: ~
     # -- Internal keys for MinIO
     minioAccessKey: minio
@@ -29,19 +29,24 @@ platform:
     cloudsqlInstanceConnectionName: ~
     # -- Enable or disable proxy agent. Only disable for CI.
     proxyEnabled: true
+  azure:
+    # -- Azure Storage Account Name
+    storageAccountName: ""
+    # -- Azure Storage Account Key
+    storageAccountKey: ""
 
-executor:
-  emissary: false
+# -- Name of Argo executor (default is emissary). See https://argoproj.github.io/argo-workflows/workflow-executors/
+executor: "emissary"
 
 # -- Links to all images for KFP and related components. Ported from Kustomize manifests for Kubeflow Pipelines 1.8.2
 images:
   apiserver: gcr.io/ml-pipeline/api-server:1.8.2
-  argoexecutor: gcr.io/ml-pipeline/argoexec:v2.12.9-license-compliance
-  argoworkflowcontroller: gcr.io/ml-pipeline/workflow-controller:v2.12.9-license-compliance
+  argoexecutor: gcr.io/ml-pipeline/argoexec:v3.1.14-license-compliance
+  argoworkflowcontroller: gcr.io/ml-pipeline/workflow-controller:v3.1.14-license-compliance
   cloudsqlproxy: gcr.io/cloudsql-docker/gce-proxy:1.14
   frontend: gcr.io/ml-pipeline/frontend:1.8.2
   metadataserver: gcr.io/tfx-oss-public/ml_metadata_store_server:1.9.0
-  minio: minio/minio:RELEASE.2022-07-08T00-05-23Z
+  minio: minio/minio:RELEASE.2022-04-16T04-26-02Z
   mysql: gcr.io/ml-pipeline/mysql:8.0
   persistenceagent: gcr.io/ml-pipeline/persistenceagent:1.8.2
   proxyagent: gcr.io/ml-pipeline/inverse-proxy-agent:1.8.2
